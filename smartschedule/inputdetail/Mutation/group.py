@@ -79,7 +79,7 @@ class DeleteGroup(graphene.Mutation):
         
 
 
-class Mutation(graphene.ObjectType):
-    add_group = AddGroup.Field()
-    update_group = UpdateGroup.Field()
-    delete_group = DeleteGroup.Field()
+# class Mutation(graphene.ObjectType):
+#     add_group = AddGroup.Field()
+#     update_group = UpdateGroup.Field()
+#     delete_group = DeleteGroup.Field()

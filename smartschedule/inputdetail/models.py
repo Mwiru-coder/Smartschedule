@@ -1,3 +1,4 @@
+from multiprocessing.pool import INIT
 from django.db import models
 from django.utils.timezone import now
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
@@ -6,7 +7,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # Hii ni model inayohifadhi taarifa za idara
 class Department(models.Model):
-    department_id = models.AutoField(primary_key=True)
+    department_id = models.AutoField(primary_key=True, default="D100")
     department_name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
@@ -15,7 +16,7 @@ class Department(models.Model):
 
 # Hii ni model inayohifadhi taarifa za programu zinazotolewa na idara
 class Program(models.Model):
-    program_code = models.CharField(primary_key=True, max_length=50, unique=True)
+    program_code = models.CharField(primary_key=True, max_length=50, unique=True,default="P100",)
     program_name = models.CharField(max_length=255, unique=True)
     duration = models.IntegerField()
     department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="programs")  # ✅ Added related_name
@@ -26,10 +27,10 @@ class Program(models.Model):
 
 # Hii ni model inayohifadhi taarifa za kozi zinazohusiana na programu mbalimbali
 class Course(models.Model):
-    course_code = models.CharField(primary_key=True, max_length=20, unique=True)
+    course_code = models.CharField(primary_key=True, max_length=20, unique=True,default="C100")
     course_name = models.CharField(max_length=150, unique=True)
     program_code = models.ForeignKey(Program, on_delete=models.CASCADE, related_name="courses")  # ✅ Added related_name
-    course_credit = models.IntegerField()   
+    course_credit = models.IntegerField(default=9)   
     def __str__(self):
         return f"{self.course_code} - {self.course_name}"
 
@@ -60,7 +61,7 @@ class UserManager(BaseUserManager):
 
 # User Model (Custom User Model)
 class User(AbstractBaseUser, PermissionsMixin):
-    registration_no = models.CharField(primary_key=True, max_length=20, unique=True)
+    registration_no = models.CharField(primary_key=True, max_length=20, unique=True,default="NIT/BIT/1898")
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     second_name = models.CharField(max_length=40, blank=True, null=True)
@@ -100,16 +101,16 @@ class Venue(models.Model):
 
 
 class Group(models.Model):
-    group_id = models.AutoField(primary_key=True)
+    group_id = models.AutoField(primary_key=True,default="First year Group A")
     academic_year = models.IntegerField()
-    group_name = models.CharField(unique=True)
+    group_name = models.CharField(unique=True, max_length=100)
     course_code = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="groups")  # ✅ Added related_name
     students_No = models.IntegerField()
     Program_code = models.ForeignKey(Program, on_delete=models.CASCADE, related_name="groups")  # ✅ Added related_name
     Department_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="groups")  # ✅ Added related_name
 
 class Schedule(models.Model):
-    schedule_id = models.AutoField(primary_key=True)
+    schedule_id = models.AutoField(primary_key=True,)
     course_code = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="schedules")  # ✅ Merged course_code and course_name
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="schedules")  # ✅ Added related_name
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="schedules")  # ✅ Added related_name
@@ -117,8 +118,10 @@ class Schedule(models.Model):
     day_of_week = models.CharField(max_length=10)
     start_time = models.TimeField()
     end_time = models.TimeField()
+    updated_at = models.DateTimeField(au)
     program_code = models.ForeignKey(Program, on_delete=models.CASCADE, related_name="schedules")  # ✅ Added related_name
-    
+    program_name = models.ForeignKey(Program, on_delete=models.CASCADE,related_name="Schedule")
+
     def __str__(self):
         return f"{self.program.program_name}, {self.course.course_name} - {self.day_of_week} {self.start_time} - {self.end_time} at {self.venue.venue_name}"
 

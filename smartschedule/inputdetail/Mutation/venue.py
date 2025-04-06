@@ -63,7 +63,7 @@ class DeleteVenue(graphene.Mutation):
             return DeleteVenue(success=False, message=str(error))
         
     
-class Mutation(graphene.ObjectType):
-    add_venue = AddVenue.Field()
-    update_venue = UpdateVenue.Field()
-    delete_venue = DeleteVenue.Field()
+# class Mutation(graphene.ObjectType):
+#     add_venue = AddVenue.Field()
+#     update_venue = UpdateVenue.Field()
+#     delete_venue = DeleteVenue.Field()

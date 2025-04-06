@@ -8,15 +8,17 @@ class AddProgram(graphene.Mutation):
     class Arguments:
         program_name = graphene.String(required=True)
         program_code = graphene.String(required=True)
+        duration = graphene.String(requred=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, program_name, program_code,):
+    def mutate(self, info, program_name, program_code,duration):
         try:
             new_program = Program(
                 program_name=program_name,
                 program_code=program_code,
+                duration=duration,
             )
             new_program.save()
             return AddProgram(success=True, message="Program added successfully.")
@@ -29,14 +31,16 @@ class UpdateProgram(graphene.Mutation):
     class Arguments:
         program_name = graphene.String(required=True)
         program_code = graphene.String(required=True)
+        duration = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info,program_name, program_code):
+    def mutate(self, info,program_name, program_code,duration):
         try:
             program = Program.objects.get(id=program_code)
             program.program_name = program_name
+            program.duration = duration
             program.save()
             return UpdateProgram(success=True, message="Program updated successfully.")
         except Program.DoesNotExist:
@@ -62,7 +66,7 @@ class DeleteProgram(graphene.Mutation):
         except Exception as e:
             return DeleteProgram(success=False, message=str(e))
     
-class Mutation(graphene.ObjectType):
-    add_program = AddProgram.Field()
-    update_program = UpdateProgram.Field()
-    delete_program = DeleteProgram.Field()
+# class Mutation(graphene.ObjectType):
+#     add_program = AddProgram.Field()
+#     update_program = UpdateProgram.Field()
+#     delete_program = DeleteProgram.Field()

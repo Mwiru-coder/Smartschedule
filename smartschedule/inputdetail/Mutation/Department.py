@@ -62,7 +62,7 @@ class DeleteDepartment(graphene.Mutation):
         
 
 
-class Mutation(graphene.ObjectType):
-    add_department = AddDepartment.Field()
-    update_department = UpdateDepartment.Field()
-    delete_department = DeleteDepartment.Field()
+# class Mutation(graphene.ObjectType):
+#     add_department = AddDepartment.Field()
+#     update_department = UpdateDepartment.Field()
+#     delete_department = DeleteDepartment.Field()

@@ -66,7 +66,7 @@ class DeleteCourse(graphene.Mutation):
         
 
 
-class Mutation(graphene.ObjectType):
-    add_course = AddCourse.Field()
-    update_course = UpdateCourse.Field()
-    delete_course = DeleteCourse.Field()
+# class Mutation(graphene.ObjectType):
+#     add_course = AddCourse.Field()
+#     update_course = UpdateCourse.Field()
+#     delete_course = DeleteCourse.Field()
