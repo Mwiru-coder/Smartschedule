@@ -1,6 +1,5 @@
 import graphene
 from ..models import Program
-from ..Objecttype import ProgramType
 
 
 # mutation kwa ajili ya kuongeza taarifa za programe
@@ -8,7 +7,7 @@ class AddProgram(graphene.Mutation):
     class Arguments:
         program_name = graphene.String(required=True)
         program_code = graphene.String(required=True)
-        duration = graphene.String(requred=True)
+        duration = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()

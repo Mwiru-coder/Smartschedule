@@ -6,6 +6,6 @@ class GenerateTimeTable(graphene.Mutation):
     message = graphene.String()
 
 
-def mutate(self,info):
-    generate_timetable()
-    return GenerateTimeTable(success = True, message="Time table Generated Successiful..")
+    def mutate(root,info):
+        generate_timetable()
+        return GenerateTimeTable(success = True, message="Time table Generated Successiful..")

@@ -1,6 +1,6 @@
 import graphene
 from ..models import Venue
-from ..Objecttype import VenueType
+
 
 class AddVenue(graphene.Mutation):
     class Arguments:

@@ -1,20 +1,19 @@
 import graphene
-from ..models import Department
-from ..Objecttype import DepartmentType
+from inputdetail.models import Department
 
 class AddDepartment(graphene.Mutation):
     class Arguments:
         department_name = graphene.String(required=True)
-        department_code = graphene.String(required=True)
+        department_id = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self,info,department_name,department_code):
+    def mutate(root,info,department_name,department_id):
         try:
             new_department = Department(
                 department_name=department_name,
-                department_code=department_code,
+                department_id=department_id,
             )
             new_department.save()
             return AddDepartment(success=True, message="Department added successfully.")
@@ -26,14 +25,14 @@ class AddDepartment(graphene.Mutation):
 class UpdateDepartment(graphene.Mutation):
     class Arguments:
         department_name = graphene.String(required=True)
-        department_code = graphene.String(required=True)
+        department_id = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self,info,department_name,department_code):
+    def mutate(root,info,department_name,department_id):
         try:
-            department = Department.objects.get(department_code=department_code)
+            department = Department.objects.get(department_id=department_id)
             department.department_name = department_name
             department.save()
             return UpdateDepartment(success=True, message="Department updated successfully.")
@@ -45,14 +44,14 @@ class UpdateDepartment(graphene.Mutation):
     
 class DeleteDepartment(graphene.Mutation):
     class Arguments:
-        department_code = graphene.String(required=True)
+        department_id = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, department_code):
+    def mutate(root, info, department_id):
         try:
-            department = Department.objects.get(department_code=department_code)
+            department = Department.objects.get(department_ide=department_id)
             department.delete()
             return DeleteDepartment(success=True, message="Department deleted successfully.")
         except Department.DoesNotExist:

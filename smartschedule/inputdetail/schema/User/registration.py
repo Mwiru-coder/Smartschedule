@@ -1,5 +1,5 @@
 import graphene
-from ..models import User, Department, Course
+from inputdetail.models import User, Department, Course
 from ..Objecttype import UserType
 
 
@@ -14,11 +14,11 @@ class CreateUser(graphene.Mutation):
         phone_no = graphene.String(required=True)
         email = graphene.String(required=True)
         password = graphene.String()
-        department_id = graphene.ID(required=True)
+        department_id = graphene.String(required=True)
         course_codes = graphene.List(graphene.ID)  # ManyToMany
 
-    def mutate(self, info, registration_no, first_name, last_name, phone_no, email, department_id, course_codes=[], password=None, second_name=None):
-
+    @staticmethod
+    def mutate(root, info, registration_no, first_name, last_name, phone_no, email, department_id, course_codes=[], password=None, second_name=None):
         department = Department.objects.get(pk=department_id)
         user = User(
             registration_no=registration_no,
@@ -46,7 +46,6 @@ class CreateUser(graphene.Mutation):
 
 
 
-
 class UpdateUser(graphene.Mutation):
     user = graphene.Field(UserType)
     success = graphene.Boolean()
@@ -62,7 +61,7 @@ class UpdateUser(graphene.Mutation):
         department_id = graphene.Int()
         course_codes = graphene.List(graphene.String)  # List of course codes (if needed)
 
-    def mutate(self, info, registration_no, **kwargs):
+    def mutate(root, info, registration_no, **kwargs):
         try:
             user = User.objects.get(registration_no=registration_no)
 
@@ -94,7 +93,7 @@ class DeleteUser(graphene.Mutation):
     class Arguments:
         registration_no = graphene.String(required=True)
 
-    def mutate(self, info, registration_no):
+    def mutate(root, info, registration_no):
         try:
             user = User.objects.get(registration_no=registration_no)
             user.delete()
@@ -107,7 +106,7 @@ class LogoutUser(graphene.Mutation):
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self,info,):
+    def mutate(root,info,):
         return LogoutUser(success = True, message= "Logout succsessful.")
 
 

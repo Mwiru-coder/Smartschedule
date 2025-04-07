@@ -1,6 +1,5 @@
 import graphene
 from ..models import Group
-from ..Objecttype import GroupType
 
 
 class AddGroup(graphene.Mutation):
@@ -11,11 +10,11 @@ class AddGroup(graphene.Mutation):
         course_code = graphene.String(required=True)
         program_code = graphene.String(required=True)
         student_number = graphene.Int(required=True)
-        department_code = graphene.String(required=True)
+        department_id = graphene.String(required=True)
     
-success = graphene.Boolean()
-message = graphene.String()
-def mutate(self, info, group_id, group_name, academic_year, course_code, program_code, student_number, department_code):
+    success = graphene.Boolean()
+    message = graphene.String()
+    def mutate(root, info, group_id, group_name, academic_year, course_code, program_code, student_number, department_id):
         try:
             new_group = Group(
                 group_id=group_id,
@@ -24,7 +23,7 @@ def mutate(self, info, group_id, group_name, academic_year, course_code, program
                 course_code=course_code,
                 program_code=program_code,
                 student_number=student_number,
-                department_code=department_code
+                department_id=department_id
             )
             new_group.save()
             return AddGroup(success=True, message="Group added successfully.")
@@ -39,12 +38,12 @@ class UpdateGroup(graphene.Mutation):
         course_code = graphene.String(required=True)
         program_code = graphene.String(required=True)
         student_number = graphene.Int(required=True)
-        department_code = graphene.String(required=True)
+        department_id = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, group_id, group_name, academic_year, course_code, program_code, student_number, department_code):
+    def mutate(self, info, group_id, group_name, academic_year, course_code, program_code, student_number, department_id):
         try:
             group = Group.objects.get(group_id=group_id)
             group.group_name = group_name
@@ -52,7 +51,7 @@ class UpdateGroup(graphene.Mutation):
             group.course_code = course_code
             group.program_code = program_code
             group.student_number = student_number
-            group.department_code = department_code
+            group.department_id = department_id
             group.save()
             return UpdateGroup(success=True, message="Group updated successfully.")
         except Group.DoesNotExist:

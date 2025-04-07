@@ -1,10 +1,10 @@
-from course import *
-from program import *
-from Department import *
-from group import *
-from program import *
-from venue import *
-from generate_time_table import GenerateTimeTable
+from .course import *
+from .program import *
+from .Department import *
+from .group import *
+from .program import *
+from .venue import *
+from .generate_time_table import GenerateTimeTable
 
 
 

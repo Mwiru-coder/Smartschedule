@@ -1,17 +1,17 @@
 import graphene
-from ..models import Course
-from ..Objecttype import CourseType
+from inputdetail.models import Course
+
 
 class AddCourse(graphene.Mutation):
     class Arguments:
-        Course_name = graphene.String(required=True)
-        Course_code = graphene.String(required=True)
-        Course_credit = graphene.Int(required=True)
+        course_name = graphene.String(required=True)
+        course_code = graphene.String(required=True)
+        course_credit = graphene.Int(required=True)
     
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, Course_name, Course_code, Course_credit):
+    def mutate(root, info, Course_name, Course_code, Course_credit):
         try:
             new_course = Course(
                 course_name=Course_name,
@@ -27,14 +27,14 @@ class AddCourse(graphene.Mutation):
 
 class UpdateCourse(graphene.Mutation):
     class Arguments:
-        Course_name = graphene.String(required=True)
-        Course_code = graphene.String(required=True)
-        Course_credit = graphene.Int(required=True)
+        course_name = graphene.String(required=True)
+        course_code = graphene.String(required=True)
+        course_credit = graphene.Int(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, Course_name, Course_code, Course_credit):
+    def mutate(root, info, Course_name, Course_code, Course_credit):
         try:
             course = Course.objects.get(course_code=Course_code)
             course.course_name = Course_name
@@ -49,14 +49,14 @@ class UpdateCourse(graphene.Mutation):
     
 class DeleteCourse(graphene.Mutation):
     class Arguments:
-        Course_code = graphene.String(required=True)
+        course_code = graphene.String(required=True)
 
     success = graphene.Boolean()
     message = graphene.String()
 
-    def mutate(self, info, Course_code):
+    def mutate(root, info, course_code):
         try:
-            course = Course.objects.get(course_code=Course_code)
+            course = Course.objects.get(course_code=course_code)
             course.delete()
             return DeleteCourse(success=True, message="Course deleted successfully.")
         except Course.DoesNotExist:

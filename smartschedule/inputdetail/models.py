@@ -101,7 +101,7 @@ class Venue(models.Model):
 
 
 class Group(models.Model):
-    group_id = models.AutoField(primary_key=True,default="First year Group A")
+    group_id = models.AutoField(primary_key=True,default="12")
     academic_year = models.IntegerField()
     group_name = models.CharField(unique=True, max_length=100)
     course_code = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="groups")  # ✅ Added related_name
@@ -118,7 +118,7 @@ class Schedule(models.Model):
     day_of_week = models.CharField(max_length=10)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    updated_at = models.DateTimeField(au)
+    updated_at = models.DateTimeField()
     program_code = models.ForeignKey(Program, on_delete=models.CASCADE, related_name="schedules")  # ✅ Added related_name
     program_name = models.ForeignKey(Program, on_delete=models.CASCADE,related_name="Schedule")
 

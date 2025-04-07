@@ -1,7 +1,10 @@
 import graphene
-from inputdetail.Mutation.allmutation import Mutation
-from inputdetail.User.login import UMutation
-from smartschedule.inputdetail.Query.Query import Query
+from inputdetail.schema.allmutation import Mutation
+from inputdetail.schema.User.login import UMutation
+from inputdetail.schema.Query.Query import Query
+# from inputdetail.Objecttype import *
+
+
 class Query(Query, graphene.ObjectType):
     pass
 

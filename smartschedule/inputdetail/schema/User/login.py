@@ -1,8 +1,8 @@
 import graphene
 import graphql_jwt
 from django.contrib.auth import authenticate
-from User.registration import CreateUser, DeleteUser, UpdateUser, LogoutUser
-from inputdetail.Objecttype import UserType  # GraphQL user type
+from .registration import *
+from inputdetail.schema.Objecttype import UserType  # GraphQL user type
 from graphql_jwt.mixins import JSONWebTokenMixin
 
 class CustomObtainJSONWebToken(JSONWebTokenMixin, graphene.Mutation):
@@ -30,7 +30,6 @@ class UMutation(graphene.ObjectType):
     delete_user = DeleteUser.Field()
     update_user = UpdateUser.Field()
     Logou_tUser = LogoutUser.Field()
-
     # Auth Mutations
     login = CustomObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()

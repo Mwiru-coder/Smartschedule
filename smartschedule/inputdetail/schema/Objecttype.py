@@ -1,4 +1,4 @@
-from .models import Program, Department, Course, User,Conflict, Venue, Group, Schedule
+from inputdetail.models import *
 from graphene_django import DjangoObjectType
 from django.contrib import admin
 # from django.utils.translation import gettext_lazy as _
