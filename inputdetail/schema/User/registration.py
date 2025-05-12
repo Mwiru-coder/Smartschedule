@@ -14,7 +14,7 @@ class CreateUser(graphene.Mutation):
         phone_no = graphene.String(required=True)
         email = graphene.String(required=True)
         password = graphene.String()
-        department_id = graphene.String(required=True)
+        department_id = graphene.ID(required=True)
         course_codes = graphene.List(graphene.ID)  # ManyToMany
 
     @staticmethod

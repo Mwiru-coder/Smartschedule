@@ -1,5 +1,5 @@
 import graphene
-from ..models import Venue
+from ..models import Venue  # Make sure this is the correct path to your Venue model
 
 
 class AddVenue(graphene.Mutation):
@@ -12,6 +12,17 @@ class AddVenue(graphene.Mutation):
     message = graphene.String()
 
     def mutate(self, info, venue_name, venue_number, capacity):
+        if Venue.objects.filter(venue_number=venue_number).exists():
+            return AddVenue(success=False, message="Venue with this number already exists.")
+        if Venue.objects.filter(venue_name=venue_name).exists():
+            return AddVenue(success=False, message="Venue with this name already exists.")
+        if capacity <= 0:
+            return AddVenue(success=False, message="Capacity must be a positive integer.")
+        if not isinstance(venue_name, str) or not isinstance(venue_number, str):
+            return AddVenue(success=False, message="Venue name and number must be strings.")
+        if not isinstance(capacity, int):
+            return AddVenue(success=False, message="Capacity must be an integer.")
+
         try:
             new_venue = Venue(
                 venue_name=venue_name,
@@ -35,20 +46,24 @@ class UpdateVenue(graphene.Mutation):
     def mutate(self, info, venue_name, venue_number, capacity):
         try:
             venue = Venue.objects.get(venue_number=venue_number)
-            venue.venue_name = venue_name
-            venue.capacity = capacity
-            venue.save()
-            return UpdateVenue(success=True, message="Venue updated successfully.")
         except Venue.DoesNotExist:
             return UpdateVenue(success=False, message="Venue not found.")
-        except Exception as error:
-            return UpdateVenue(success=False, message=str(error))
         
-    
+        if capacity <= 0:
+            return UpdateVenue(success=False, message="Capacity must be a positive integer.")
+        if not isinstance(venue_name, str) or not isinstance(venue_number, str):
+            return UpdateVenue(success=False, message="Venue name and number must be strings.")
+
+        venue.venue_name = venue_name
+        venue.capacity = capacity
+        venue.save()
+        return UpdateVenue(success=True, message="Venue updated successfully.")
+
+
 class DeleteVenue(graphene.Mutation):
     class Arguments:
         venue_number = graphene.String(required=True)
-
+        
     success = graphene.Boolean()
     message = graphene.String()
 
@@ -63,7 +78,7 @@ class DeleteVenue(graphene.Mutation):
             return DeleteVenue(success=False, message=str(error))
         
     
-# class Mutation(graphene.ObjectType):
-#     add_venue = AddVenue.Field()
-#     update_venue = UpdateVenue.Field()
-#     delete_venue = DeleteVenue.Field()
+class Mutation(graphene.ObjectType):
+    add_venue = AddVenue.Field()
+    update_venue = UpdateVenue.Field()
+    delete_venue = DeleteVenue.Field()

@@ -62,7 +62,7 @@ class UserManager(BaseUserManager):
 
 # User Model (Custom User Model)
 class User(AbstractBaseUser, PermissionsMixin):
-    registration_no = models.CharField(primary_key=True, max_length=20, unique=True,default="NIT/BIT/1898")
+    registration_no = models.CharField(max_length=20, unique=True,default="NIT/BIT/1898")
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     second_name = models.CharField(max_length=40, blank=True, null=True)
